@@ -52,6 +52,31 @@ L_TYPE* L_FUNPREFIX##New(L_DATATYPE data)                                   \
         return head;                                                        \
     }                                                                       \
 
+#define NEWLISTAPPENDNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                   \
+    L_TYPE* L_FUNPREFIX##AppendNew(L_TYPE *head, L_DATATYPE data)           \
+    {                                                                       \
+        return L_FUNPREFIX##Append(head, L_FUNPREFIX##New(data));           \
+    }                                                                       \
+
+#define NEWLISTPREPEND(L_TYPE, L_FUNPREFIX)                                 \
+    L_TYPE* L_FUNPREFIX##Prepend(L_TYPE *oldhead, L_TYPE *newhead)           \
+    {                                                                       \
+        if(!newhead)                                                        \
+            return oldhead;                                                 \
+        if(!oldhead)                                                        \
+            return newhead;                                                 \
+        L_TYPE *cur = newhead;                                              \
+        while(cur->next){cur = cur->next;}                                  \
+        cur->next = oldhead;                                                \
+        return newhead;                                                     \
+    }                                                                       \
+
+#define NEWLISTPREPENDNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                  \
+    L_TYPE* L_FUNPREFIX##PrependNew(L_TYPE *oldhead, L_DATATYPE data)       \
+    {                                                                       \
+        return L_FUNPREFIX##Prepend(oldhead, L_FUNPREFIX##New(data));       \
+    }                                                                       \
+
 #define NEWLISTLEN(L_TYPE, L_FUNPREFIX)                                     \
     st L_FUNPREFIX##Len(L_TYPE *list)                                       \
     {                                                                       \
@@ -69,8 +94,11 @@ L_TYPE* L_FUNPREFIX##New(L_DATATYPE data)                                   \
         struct L_TYPE *next;                                                \
     }L_TYPE;                                                                \
     NEWLISTNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                             \
-    NEWLISTAPPEND(L_TYPE, L_FUNPREFIX)                                      \
     NEWLISTLEN(L_TYPE, L_FUNPREFIX)                                         \
+    NEWLISTAPPEND(L_TYPE, L_FUNPREFIX)                                      \
+    NEWLISTAPPENDNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                       \
+    NEWLISTPREPEND(L_TYPE, L_FUNPREFIX)                                     \
+    NEWLISTPREPENDNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                      \
 
 #define NEWLISTTYPE_P(L_TYPE, L_DATATYPE, L_FUNPREFIX, L_PRINTSPEC)         \
     NEWLISTTYPE(L_TYPE, L_DATATYPE, L_FUNPREFIX)                            \
