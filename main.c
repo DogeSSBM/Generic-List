@@ -8,11 +8,13 @@ NEWLISTTYPE_P(Liststr, char*, liststr, "%s")
 int main(void)
 {
     printf("int list:\n");
-    Listi *listi = listiNew(789);
-    listi = listiPrependNew(listi, 456);
-    listi = listiPrependNew(listi, 123);
+    Listi *listi = listiNew(3);
+    listi = listiPrependNew(listi, 1);
+    listi = listiPrependNew(listi, 0);
+    listiInsertAfter(listiFindData(listi, 1), listiNew(2));
     listiListPrintln(listi);
     printf("len: %zu\n", listiLen(listi));
+    listiFreeList(listi);
 
     printf("str list:\n");
     Liststr *lists = liststrNew("abc");
@@ -20,6 +22,7 @@ int main(void)
     lists = liststrAppendNew(lists, "ghi");
     liststrListPrintln(lists);
     printf("len: %zu\n", liststrLen(lists));
+    liststrFreeList(lists);
 
     return 0;
 }

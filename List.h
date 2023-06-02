@@ -32,7 +32,7 @@
     }
 
 #define NEWLISTFREE(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                            \
-    void L_FUNPREFIX##FreeList(L_TYPE *head)                                                    \
+    L_TYPE* L_FUNPREFIX##Free(L_TYPE *head)                                                     \
     {                                                                                           \
         if(head){                                                                               \
             L_TYPE *next = head->next;                                                          \
@@ -45,7 +45,7 @@
 #define NEWLISTFREELIST(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                        \
     void L_FUNPREFIX##FreeList(L_TYPE *head)                                                    \
     {                                                                                           \
-        while(head = L_FUNPREFIX##Free(head));                                                  \
+        while((head = L_FUNPREFIX##Free(head)));                                                  \
     }
 
 #define NEWLISTNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                             \
@@ -141,6 +141,8 @@
         struct L_TYPE *next;                                                                    \
     }L_TYPE;                                                                                    \
     NEWLISTNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                                 \
+    NEWLISTFREE(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                                \
+    NEWLISTFREELIST(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                            \
     NEWLISTLEN(L_TYPE, L_FUNPREFIX)                                                             \
     NEWLISTAPPEND(L_TYPE, L_FUNPREFIX)                                                          \
     NEWLISTAPPENDNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                           \
