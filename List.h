@@ -34,18 +34,30 @@
 #define NEWLISTFREE(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                            \
     L_TYPE* L_FUNPREFIX##Free(L_TYPE *head)                                                     \
     {                                                                                           \
-        if(head){                                                                               \
-            L_TYPE *next = head->next;                                                          \
-            free(head);                                                                         \
-            head = next;                                                                        \
-        }                                                                                       \
-        return head;                                                                            \
+        if(!head){return NULL;}                                                                 \
+        L_TYPE *next = head->next;                                                              \
+        free(head);                                                                             \
+        return next;                                                                            \
     }
 
 #define NEWLISTFREELIST(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                        \
     void L_FUNPREFIX##FreeList(L_TYPE *head)                                                    \
     {                                                                                           \
-        while((head = L_FUNPREFIX##Free(head)));                                                  \
+        while((head = L_FUNPREFIX##Free(head)));                                                \
+    }
+
+#define NEWLISTFREEDEEP(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                        \
+    L_TYPE* L_FUNPREFIX##FreeDeep(L_TYPE *head)                                                 \
+    {                                                                                           \
+        if(!head){return NULL;}                                                                 \
+        if(head->data){free(head->data);}                                                       \
+        return L_FUNPREFIX##Free(head);                                                         \
+    }
+
+#define NEWLISTFREEDEEPLIST(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                    \
+    void L_FUNPREFIX##FreeDeepList(L_TYPE *head)                                                \
+    {                                                                                           \
+        while((head = L_FUNPREFIX##FreeDeep(head)));                                            \
     }
 
 #define NEWLISTNEW(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                             \
@@ -158,5 +170,9 @@
     NEWLISTPRINTLN(L_TYPE, L_DATATYPE, L_FUNPREFIX, L_PRINTSPEC)                                \
     NEWLISTLISTPRINT(L_TYPE, L_DATATYPE, L_FUNPREFIX, L_PRINTSPEC)                              \
     NEWLISTLISTPRINTLN(L_TYPE, L_DATATYPE, L_FUNPREFIX, L_PRINTSPEC)
+
+#define NEWLISTTYPE_F(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                          \
+    NEWLISTFREEDEEP(L_TYPE, L_DATATYPE, L_FUNPREFIX)                                            \
+    NEWLISTFREEDEEPLIST(L_TYPE, L_DATATYPE, L_FUNPREFIX)
 
 #endif /* end of include guard: LIST_H */
