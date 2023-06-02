@@ -1,6 +1,8 @@
 #include "Includes.h"
 
+NEWLISTTYPE(Listi, int, listi)
 NEWLISTTYPE_P(Listi, int, listi, "%i")
+NEWLISTTYPE(Liststr, char*, liststr)
 NEWLISTTYPE_P(Liststr, char*, liststr, "%s")
 
 int main(void)
